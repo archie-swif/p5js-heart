@@ -1,112 +1,63 @@
-let brickWidth;
-let rows;
-let columns;
-let from;
-let to;
+let pixels;
+let pixelSize = 50;
 
 function setup() {
 
-    createCanvas(windowWidth, windowHeight, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  fullscreen(true);
+  let r = '#F00';
+  let w = '#FFF';
+
+  pixels = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, r, r, 0, r, r, 0, 0],
+    [0, r, 0, 0, r, 0, 0, r, 0],
+    [0, r, 0, 0, 0, 0, 0, r, 0],
+    [0, 0, r, 0, 0, 0, r, 0, 0],
+    [0, 0, 0, r, 0, r, 0, 0, 0],
+    [0, 0, 0, 0, r, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
 
 }
 
 function draw() {
 
-//     rotateX(frameCount * 0.01);
-    rotateY(frameCount * 0.01);
+  translate(0, 0, -100);
 
-    translate(-100, -100);
+  rotateY((frameCount * 0.01) * 0.5);
+  translate(-200, -150, 0);
+  translate(0, cos(frameCount / 20), cos(frameCount / 10) * 10);
 
-    background(0);
-    fill(255, 0, 0);
 
-    box();
+  background(0);
 
-    translate(50, 0);
-    box();
 
-    translate(50, 50);
-    box();
-
-    translate(50, -50);
-    box();
-
-    translate(50, 0);
-    box();
-
-    translate(50, 50);
-    box();
-
-    translate(0, 50);
-    box();
-
-    translate(-50, 50);
-    box();
-
-    translate(-50, 50);
-    box();
-
-    translate(-50, 50);
-    box();
-
-    translate(-50, -50);
-    box();
-
-    translate(-50, -50);
-    box();
-
-    translate(-50, -50);
-    box();
-
-    translate(0, -50);
-    box();
-
-}
-
-function drawBalls() {
+  for (let row of pixels) {
     push();
-    //     rotateZ(frameCount * 0.01);
-    rotateY(frameCount * 0.01);
-    rotateX(frameCount * 0.02);
+    for (let pixel of row) {
 
-    //     noFill();
-    stroke(320);
-    sphere(12, 6, 6);
-
-    pop();
-
-}
-
-function drawBricks() {
-    push();
-    translate(-(brickWidth * columns) / 2, 100 - windowHeight / 2);
-
-    background(0);
-
-    for (let y = 0; y < rows; y++) {
-
-        let rowColor = lerpColor(from, to, y / rows);
-
-        //         fill(rowColor);
+      if (pixel) {
+        stroke(0);
+        fill(pixel);
+      } else {
+        noStroke();
+        // stroke(255);
         noFill();
-        stroke(rowColor);
-        //         noStroke();
+      }
 
-        translate(0, brickWidth);
-
-        push();
-        for (let x = 0; x < columns; x++) {
-            translate(brickWidth, 0);
-            box(brickWidth, brickWidth);
-        }
-        pop();
-
+      box(pixelSize);
+      translate(pixelSize, 0);
     }
     pop();
+    translate(0, pixelSize);
+
+  }
+
 }
 
-// ui stuff
 
+// ui stuff
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight);
 }
